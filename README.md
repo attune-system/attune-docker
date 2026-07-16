@@ -7,7 +7,7 @@ Run Attune Services from published container images without cloning or building 
 Requirements: Docker Engine and Docker Compose v2.
 
 ```sh
-git clone <this-repository-url> attune-docker
+git clone https://github.com/attune-system/attune-docker.git attune-docker
 cd attune-docker
 ./scripts/create-env.sh
 docker compose pull
