@@ -34,6 +34,18 @@ The Compose stack pulls all Attune services and bootstrap jobs from
 migrations, user initialization, and core-pack initialization. The only local
 application file mounted into containers is `config.docker.yaml`.
 
+Fresh databases include the managed **Attune Standard Pack Index** at:
+
+```text
+https://raw.githubusercontent.com/attune-system/index/main/index.json
+```
+
+It can be reordered, disabled, or permanently deleted through normal pack
+index administration. `config.docker.yaml` approves only the public hosts used
+by that index and its GitHub install sources. Set
+`pack_registry.approved_public_hosts: []` to opt out of public registry and pack
+source traffic by default.
+
 `edge` is the newest tag currently published for every required Attune image;
 the registry does not currently provide a `latest` tag. To select another
 published version, change `ATTUNE_IMAGE_TAG` in `.env` before pulling:
