@@ -11,7 +11,7 @@ umask 077
 
 cat >.env <<EOF
 ATTUNE_IMAGE_REGISTRY=ghcr.io/attune-system
-ATTUNE_IMAGE_TAG=latest
+ATTUNE_IMAGE_TAG=edge
 JWT_SECRET=$(openssl rand -hex 32)
 ENCRYPTION_KEY=$(openssl rand -hex 32)
 AGENT_BOOTSTRAP_TOKEN=$(openssl rand -hex 32)
