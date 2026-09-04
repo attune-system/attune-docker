@@ -34,17 +34,33 @@ The Compose stack pulls all Attune services and bootstrap jobs from
 migrations, user initialization, and core-pack initialization. The only local
 application file mounted into containers is `config.docker.yaml`.
 
-Fresh databases include the managed **Attune Standard Pack Index** at:
+Fresh databases include a pinned **Attune Standard Pack Index** snapshot at:
 
 ```text
-https://raw.githubusercontent.com/attune-system/index/main/index.json
+https://raw.githubusercontent.com/attune-system/index/793aabcc0eb537af7681a386b591de6c4fafd7a1/index.json
 ```
 
 It can be reordered, disabled, or permanently deleted through normal pack
 index administration. `config.docker.yaml` approves only the public hosts used
 by that index and its GitHub install sources. Set
 `pack_registry.approved_public_hosts: []` to opt out of public registry and pack
-source traffic by default.
+source traffic by default. Add the live `main` index separately only if catalog
+changes independent of Attune releases are desired.
+
+The standard entries prefer Git and fall back on failure to independently
+checksummed archives from `codeload.github.com`, so that host is required by
+the pinned index. Attune verifies and records the checksum of the source
+actually installed and rejects content whose `pack.yaml` ref or version does
+not match the selected entry.
+
+Direct remote Git/archive installs bypass index checksums and are disabled by
+default. Prefer registry references; explicitly enable
+`pack_registry.allow_unverified_direct_remote_installs` only when that risk is
+accepted.
+
+Use `attune pack install <ref> --registry-id <id>` to pin an install to one
+enabled managed index. `--no-registry` requires an explicit URL or a path
+already visible inside the API container and never performs registry lookup.
 
 `edge` is the newest tag currently published for every required Attune image;
 the registry does not currently provide a `latest` tag. To select another

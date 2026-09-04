@@ -273,7 +273,20 @@ services:
     <<: *attune-service-logging
     image: debian:bookworm-slim
     container_name: attune-worker-shell
-    entrypoint: ["/opt/attune/agent/attune-agent"]
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if ! command -v curl >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+          installed=false
+          for attempt in 1 2 3; do
+            if DEBIAN_FRONTEND=noninteractive apt-get update -qq && apt-get install -y -qq --no-install-recommends curl ca-certificates git >/dev/null 2>&1; then installed=true; break; fi
+            sleep 2
+          done
+          [ "$$installed" = true ] || exit 1
+        fi
+        command -v git >/dev/null 2>&1 || exit 1
+        exec /opt/attune/agent/attune-agent
     stop_grace_period: 45s
     environment:
       RUST_LOG: info
@@ -325,7 +338,20 @@ services:
     <<: *attune-service-logging
     image: python:3.12-slim
     container_name: attune-worker-python
-    entrypoint: ["/opt/attune/agent/attune-agent"]
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if ! command -v curl >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+          installed=false
+          for attempt in 1 2 3; do
+            if DEBIAN_FRONTEND=noninteractive apt-get update -qq && apt-get install -y -qq --no-install-recommends curl ca-certificates git >/dev/null 2>&1; then installed=true; break; fi
+            sleep 2
+          done
+          [ "$$installed" = true ] || exit 1
+        fi
+        command -v git >/dev/null 2>&1 || exit 1
+        exec /opt/attune/agent/attune-agent
     stop_grace_period: 45s
     environment:
       RUST_LOG: info
@@ -429,7 +455,20 @@ services:
     <<: *attune-service-logging
     image: nikolaik/python-nodejs:python3.12-nodejs22-slim
     container_name: attune-worker-full
-    entrypoint: ["/opt/attune/agent/attune-agent"]
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if ! command -v curl >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+          installed=false
+          for attempt in 1 2 3; do
+            if DEBIAN_FRONTEND=noninteractive apt-get update -qq && apt-get install -y -qq --no-install-recommends curl ca-certificates git >/dev/null 2>&1; then installed=true; break; fi
+            sleep 2
+          done
+          [ "$$installed" = true ] || exit 1
+        fi
+        command -v git >/dev/null 2>&1 || exit 1
+        exec /opt/attune/agent/attune-agent
     stop_grace_period: 45s
     environment:
       RUST_LOG: info
