@@ -336,7 +336,10 @@ services:
 
   worker-python:
     <<: *attune-service-logging
-    image: python:3.12-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    image: attune-worker-runtime:local
     container_name: attune-worker-python
     entrypoint:
       - /bin/sh
@@ -453,7 +456,10 @@ services:
 
   worker-full:
     <<: *attune-service-logging
-    image: nikolaik/python-nodejs:python3.12-nodejs22-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    image: attune-worker-runtime:local
     container_name: attune-worker-full
     entrypoint:
       - /bin/sh
@@ -519,7 +525,10 @@ services:
 
   sensor:
     <<: *attune-service-logging
-    image: nikolaik/python-nodejs:python3.12-nodejs22-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    image: attune-worker-runtime:local
     container_name: attune-sensor
     entrypoint: ["/opt/attune/agent/attune-sensor-agent"]
     stop_grace_period: 45s

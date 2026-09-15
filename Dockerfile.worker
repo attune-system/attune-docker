@@ -1,0 +1,9 @@
+FROM nikolaik/python-nodejs:python3.12-nodejs22-slim
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        ffmpeg \
+        git \
+    && rm -rf /var/lib/apt/lists/*

@@ -53,10 +53,11 @@ the pinned index. Attune verifies and records the checksum of the source
 actually installed and rejects content whose `pack.yaml` ref or version does
 not match the selected entry.
 
-Direct remote Git/archive installs bypass index checksums and are disabled by
-default. Prefer registry references; explicitly enable
-`pack_registry.allow_unverified_direct_remote_installs` only when that risk is
-accepted.
+Direct remote Git/archive installs bypass index checksums. This Docker setup
+enables them for the approved public hosts so explicit URL installs work out of
+the box. Prefer registry references, and set
+`pack_registry.allow_unverified_direct_remote_installs: false` for a locked-down
+deployment.
 
 Use `attune pack install <ref> --registry-id <id>` to pin an install to one
 enabled managed index. `--no-registry` requires an explicit URL or a path
